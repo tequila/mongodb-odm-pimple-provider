@@ -1,6 +1,6 @@
 <?php
 
-namespace Tequila\Silex\Provider;
+namespace Tequila\Pimple\Provider;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -10,7 +10,7 @@ use Tequila\MongoDB\ODM\DefaultMetadataFactory;
 use Tequila\MongoDB\ODM\DefaultRepositoryFactory;
 use Tequila\MongoDB\ODM\DocumentManager;
 use Tequila\MongoDB\ODM\QueryListener\SetBulkWriteBuilderListener;
-use Tequila\Silex\Provider\MongoDBServiceProvider;
+use Tequila\Pimple\Provider\MongoDBServiceProvider;
 
 class ODMServiceProvider implements ServiceProviderInterface
 {

@@ -9,10 +9,10 @@
         "pimple/pimple": "^3.0"
     },
     "autoload": {
-        "psr-4": { "Tequila\\Silex\\Provider\\": "src/" }
+        "psr-4": { "Tequila\\Pimple\\Provider\\": "src/" }
     },
     "autoload-dev": {
-        "psr-4": { "Tequila\\Silex\\Provider\\Tests\\": "tests/" }
+        "psr-4": { "Tequila\\Pimple\\Provider\\Tests\\": "tests/" }
     },
     "license": "MIT",
     "authors": [
