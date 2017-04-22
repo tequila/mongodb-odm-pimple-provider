@@ -1,12 +1,12 @@
 {
-    "name": "tequila/mongodb-silex-provider",
-    "description": "Tequila MongoDB PHP Lib (high-level mongodb driver) Silex service provider",
+    "name": "tequila/mongodb-odm-pimple-provider",
+    "description": "Tequila MongoDB ODM Pimple service provider",
     "type": "library",
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "silex/silex": "^2.0",
-        "tequila/mongodb-odm": "dev-master"
+        "tequila/mongodb-odm": "dev-master",
+        "pimple/pimple": "^3.0"
     },
     "autoload": {
         "psr-4": { "Tequila\\Silex\\Provider\\": "src/" }
