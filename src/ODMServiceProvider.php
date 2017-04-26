@@ -2,8 +2,8 @@
 
 namespace Tequila\Pimple\Provider;
 
-use Pimple\Container;
-use Pimple\ServiceProviderInterface;
+use Silex\Application;
+use Silex\ServiceProviderInterface;
 use Tequila\MongoDB\Client;
 use Tequila\MongoDB\ODM\BulkWriteBuilderFactory;
 use Tequila\MongoDB\ODM\DefaultMetadataFactory;
@@ -16,7 +16,7 @@ class ODMServiceProvider implements ServiceProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function register(Container $app)
+    public function register(Application $app)
     {
         if (!isset($app['mongodb.db'])) {
             throw new \LogicException(
@@ -31,29 +31,29 @@ class ODMServiceProvider implements ServiceProviderInterface
         $app['mongodb.connections.options_initializer']();
         foreach ($app['mongodb.options.connections'] as $connectionName => $connectionOptions) {
             $metadataFactoryServiceId = sprintf('mongodb.odm.metadata_factory.%s', $connectionName);
-            $app[$metadataFactoryServiceId] = function () {
+            $app[$metadataFactoryServiceId] = $app::share(function () {
                 return new DefaultMetadataFactory();
-            };
+            });
 
             $bulkBuilderFactoryServiceId = sprintf('mongodb.odm.bulk_builder_factory.%s', $connectionName);
-            $app[$bulkBuilderFactoryServiceId] = function (Container $app) use ($connectionName) {
+            $app[$bulkBuilderFactoryServiceId] = $app::share(function (\Pimple $app) use ($connectionName) {
                 /** @var Client $client */
                 $client = $app['mongodb.clients'][$connectionName];
 
                 return new BulkWriteBuilderFactory($client->getManager());
-            };
+            });
 
             $repositoryFactoryServiceId = sprintf('mongodb.odm.repository_factory.%s', $connectionName);
-            $app[$repositoryFactoryServiceId] = function (Container $app) use ($metadataFactoryServiceId) {
+            $app[$repositoryFactoryServiceId] = $app::share(function (\Pimple $app) use ($metadataFactoryServiceId) {
                 return new DefaultRepositoryFactory($app[$metadataFactoryServiceId]);
-            };
+            });
         }
 
         $app['mongodb.dbs.options_initializer']();
         foreach ($app['mongodb.options.dbs'] as $dbName => $dbOptions) {
             $dmServiceId = sprintf('mongodb.odm.dm.%s', $dbName);
             $connectionName = $dbOptions['connection'];
-            $app[$dmServiceId] = function (Container $app) use ($dbName, $connectionName) {
+            $app[$dmServiceId] = $app::share(function (\Pimple $app) use ($dbName, $connectionName) {
                 /** @var Client $client */
                 $client = $app['mongodb.clients'][$connectionName];
                 /** @var BulkWriteBuilderFactory $bulkBuilderFactory */
@@ -67,13 +67,20 @@ class ODMServiceProvider implements ServiceProviderInterface
                     $app[sprintf('mongodb.odm.repository_factory.%s', $connectionName)],
                     $app[sprintf('mongodb.odm.metadata_factory.%s', $connectionName)]
                 );
-            };
+            });
         }
 
-        $app['mongodb.odm.dm'] = function (Container $app) {
+        $app['mongodb.odm.dm'] = $app::share(function (Application $app) {
             $dmServiceId = sprintf('mongodb.odm.dm.%s', $app['mongodb.config.default_db_name']);
 
             return $app[$dmServiceId];
-        };
+        });
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function boot(Application $app)
+    {
     }
 }
