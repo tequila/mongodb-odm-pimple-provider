@@ -9,6 +9,9 @@
         "tequila/mongodb-odm": "dev-master",
         "pimple/pimple": "^3.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^6.1"
+    },
     "autoload": {
         "psr-4": { "Tequila\\Pimple\\Provider\\": "src/" }
     },
@@ -21,8 +24,5 @@
             "name": "Petr Buchin",
             "email": "petrbuchyn@gmail.com"
         }
-    ],
-    "require-dev": {
-        "phpunit/phpunit": "^6.1"
-    }
+    ]
 }
