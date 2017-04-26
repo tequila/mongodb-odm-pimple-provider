@@ -5,6 +5,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
+        "tequila/mongodb-pimple-provider": "dev-master",
         "tequila/mongodb-odm": "dev-master",
         "pimple/pimple": "^3.0"
     },
