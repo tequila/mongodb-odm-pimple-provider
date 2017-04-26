@@ -5,9 +5,12 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "tequila/mongodb-pimple-provider": "dev-master",
+        "tequila/mongodb-pimple-provider": "1.x-dev",
         "tequila/mongodb-odm": "dev-master",
-        "pimple/pimple": "^3.0"
+        "silex/silex": "~1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.1"
