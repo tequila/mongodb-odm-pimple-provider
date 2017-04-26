@@ -10,13 +10,15 @@ use Tequila\MongoDB\ODM\DefaultMetadataFactory;
 use Tequila\MongoDB\ODM\DefaultRepositoryFactory;
 use Tequila\MongoDB\ODM\DocumentManager;
 use Tequila\MongoDB\ODM\QueryListener\SetBulkWriteBuilderListener;
-use Tequila\Pimple\Provider\MongoDBServiceProvider;
 
 class ODMServiceProvider implements ServiceProviderInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function register(Container $app)
     {
-        if (!isset($app['mongodb.db']) || !class_exists(MongoDBServiceProvider::class)) {
+        if (!isset($app['mongodb.db'])) {
             throw new \LogicException(
                 sprintf(
                     '%s can only be used if %s is registered.',
@@ -70,6 +72,7 @@ class ODMServiceProvider implements ServiceProviderInterface
 
         $app['mongodb.odm.dm'] = function (Container $app) {
             $dmServiceId = sprintf('mongodb.odm.dm.%s', $app['mongodb.config.default_db_name']);
+
             return $app[$dmServiceId];
         };
     }
